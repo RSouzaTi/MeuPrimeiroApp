@@ -13,13 +13,22 @@ package com.exemple.meuprimeiroapp.model
  */
 data class Item(
     val id: Int,
+    val value: ItemVelue,
+)
+
+
+data class ItemVelue(
+    val id: Int,
     val name: String,
     val surname: String,
     val profession: String,
     val imageUrl: String,
     val age: Int,
     val location: ItemLocation
-)
+){
+    val fullName: String
+        get() = "$name $surname"
+}
 
 /**
  * Representa a localização geográfica de um item.

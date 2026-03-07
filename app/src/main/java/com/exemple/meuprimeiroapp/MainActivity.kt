@@ -22,7 +22,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setupViews()
@@ -49,12 +48,8 @@ class MainActivity : AppCompatActivity() {
             withContext(Dispatchers.Main) {
                 binding.swipeRefreshLayout.isRefreshing = false
                 when (result) {
-                    is Result.Success -> {
-                        binding.recyclerView.adapter = ItemAdapter(result.data)
-                    }
-
+                    is Result.Success -> handleOnSuccess(result.data)
                     is Result.Error -> {
-                        // Handle error
 
                     }
                 }
