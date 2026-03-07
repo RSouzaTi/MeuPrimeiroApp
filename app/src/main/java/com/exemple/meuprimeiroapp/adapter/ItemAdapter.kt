@@ -11,13 +11,15 @@ import com.exemple.meuprimeiroapp.model.Item
 import com.exemple.meuprimeiroapp.ui.loadUrl
 
 class ItemAdapter(
-    private val items: List<Item>
+    private val items: List<Item>,
+    private val onItemClick: (Item) -> Unit
 ) : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
     class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val imageVeiw: ImageView = view.findViewById(R.id.image)
         val fullNameTextView: TextView = view.findViewById(R.id.name)
         val ageTextView: TextView = view.findViewById(R.id.age)
         val professionTextView: TextView = view.findViewById(R.id.profession)
+
 
     }
 
@@ -36,6 +38,9 @@ class ItemAdapter(
         holder.ageTextView.text = holder.itemView.context.getString(R.string.item_age, item.value.age)
         holder.professionTextView.text = item.value.profession
         holder.imageVeiw.loadUrl(item.value.imageUrl)
+        holder.itemView.setOnClickListener {
+            onItemClick(item)
+        }
     }
 
 

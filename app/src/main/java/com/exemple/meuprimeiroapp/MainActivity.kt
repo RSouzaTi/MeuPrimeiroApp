@@ -1,7 +1,6 @@
 package com.exemple.meuprimeiroapp
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.exemple.meuprimeiroapp.adapter.ItemAdapter
@@ -44,7 +43,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun fetchItems() {
         CoroutineScope(Dispatchers.IO).launch {
-            val result = safeApiCall { RetrofitClient.apiService.getItems() }
+            val result = safeApiCall { RetrofitClient.itemApiService.getItems() }
             withContext(Dispatchers.Main) {
                 binding.swipeRefreshLayout.isRefreshing = false
                 when (result) {
@@ -58,6 +57,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun handleOnSuccess(items: List<Item>) {
-        binding.recyclerView.adapter = ItemAdapter(items)
+        binding.recyclerView.adapter = ItemAdapter(items){ item ->
+           // val intent = ItemDetailActivity.newIntent(this, item)
+          //  startActivity(intent)
+
+        }
     }
 }
