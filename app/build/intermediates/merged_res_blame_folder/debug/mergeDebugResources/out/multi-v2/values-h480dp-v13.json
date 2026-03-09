@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.exemple.meuprimeiroapp-mergeDebugResources-40:/values-h480dp-v13/values-h480dp-v13.xml",
+            "outputFile": "com.exemple.meuprimeiroapp-mergeDebugResources-44:/values-h480dp-v13/values-h480dp-v13.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\DELL\\.gradle\\caches\\9.1.0\\transforms\\16a7843061ebc26e21dc262c16667cc7\\workspace\\transformed\\material-1.13.0\\res\\values-h480dp-v13\\values-h480dp-v13.xml",
+                    "source": "C:\\Users\\DELL\\.gradle\\caches\\9.1.0\\transforms\\806eb0d69b1a81ddca35730ee4b0cde7\\workspace\\transformed\\material-1.13.0\\res\\values-h480dp-v13\\values-h480dp-v13.xml",
                     "from": {
                         "startLines": "2,3,4,5",
                         "startColumns": "4,4,4,4",
