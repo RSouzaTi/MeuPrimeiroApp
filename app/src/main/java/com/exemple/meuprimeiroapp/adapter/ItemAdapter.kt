@@ -40,9 +40,12 @@ class ItemAdapter(
         holder.imageVeiw.loadUrl(item.value.imageUrl)
         holder.itemView.setOnClickListener {
             onItemClick(item)
+
         }
     }
 
 
-    override fun getItemCount(): Int = items.size
+    override fun getItemCount(): Int{
+        return items.size
+    }
 }

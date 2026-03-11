@@ -10,9 +10,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.exemple.meuprimeiroapp.adapter.ItemAdapter
 import com.exemple.meuprimeiroapp.databinding.ActivityMainBinding
@@ -138,12 +136,15 @@ class MainActivity : AppCompatActivity() {
                 when (result) {
                     is Result.Success -> handleOnSuccess(result.data)
                     is Result.Error -> {
+                        Toast.makeText(this@MainActivity, "Erro na API: ${result.message}", Toast.LENGTH_LONG).show()
 
                     }
                 }
             }
         }
     }
+
+
 
     private fun handleOnSuccess(items: List<Item>) {
         binding.recyclerView.adapter = ItemAdapter(items) { item ->
