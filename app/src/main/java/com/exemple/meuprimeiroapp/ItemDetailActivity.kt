@@ -40,18 +40,19 @@ class ItemDetailActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-       // if (::item.isInitialized) {
-       // Se  o item já estiver carregado, carregueo no mapa
+        if (item != null) {
+            // Se  o item já estiver carregado, carregueo no mapa
             loadItemInGoogleMap()
         }
-
-
+    }
     private fun setupViews() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         binding.toolbar.setNavigationOnClickListener {
             finish()
+        }
+        binding.deleteCTA.setOnClickListener {
         }
     }
 
@@ -110,6 +111,34 @@ class ItemDetailActivity : AppCompatActivity(), OnMapReadyCallback {
                 )
             )
         }
+    }
+    private fun deleteItem() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val result = safeApiCall { RetrofitClient.itemApiService.deleteItem(item!!.value.id) }
+            withContext(Dispatchers.Main) {
+                when (result) {
+                    is Result.Success ->  handleSuccessDelete()
+                    is Result.Error -> {
+                        Toast.makeText(
+                            this@ItemDetailActivity,
+                            "Erro ao deletar o item",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        finish()
+
+                    }
+                }
+            }
+        }
+    }
+
+    private fun handleSuccessDelete() {
+        Toast.makeText(
+            this@ItemDetailActivity,
+            "Item deletado com sucesso",
+            Toast.LENGTH_SHORT
+        ).show()
+        finish()
     }
 
     companion object {
