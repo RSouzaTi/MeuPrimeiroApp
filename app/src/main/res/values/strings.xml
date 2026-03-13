@@ -6,5 +6,7 @@
     <string name="erro_delete">Erro ao deletar o item</string>
     <string name="erro_fecth_item">Erro ao buscar o item</string>
     <string name="success_delete">Item deletado com sucesso</string>
+    <string name="generical_error">Erro desconehecido, clique para tentar novamente.</string>
+    <string name="no_items">Nenhum item disponivel</string>
 
 </resources>

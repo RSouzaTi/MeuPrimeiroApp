@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.location.Location
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -55,6 +56,9 @@ class MainActivity : AppCompatActivity() {
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.addCta.setOnClickListener {
 
+        }
+        binding.message.setOnClickListener {
+            fetchItems()
         }
     }
 
@@ -135,8 +139,7 @@ class MainActivity : AppCompatActivity() {
                 binding.swipeRefreshLayout.isRefreshing = false
                 when (result) {
                     is Result.Success -> handleOnSuccess(result.data)
-                    is Result.Error -> {
-                        Toast.makeText(this@MainActivity, "Erro na API: ${result.message}", Toast.LENGTH_LONG).show()
+                    is Result.Error -> { handleOnError()
 
                     }
                 }
@@ -147,10 +150,26 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun handleOnSuccess(items: List<Item>) {
+        if (items.isEmpty()) {
+            binding.message.visibility = View.VISIBLE
+            binding.message.setText(R.string.no_items)
+            binding.recyclerView.visibility = View.GONE
+            return
+        }
+        binding.message.visibility = View.GONE
+        binding.recyclerView.visibility = View.VISIBLE
         binding.recyclerView.adapter = ItemAdapter(items) { item ->
             val intent = ItemDetailActivity.newIntent(this, item.id.toString())
             startActivity(intent)
 
         }
+    }
+
+
+    private fun handleOnError() {
+        binding.message.visibility = View.VISIBLE
+        binding.message.setText(R.string.generical_error)
+        binding.recyclerView.visibility = View.GONE
+
     }
 }
