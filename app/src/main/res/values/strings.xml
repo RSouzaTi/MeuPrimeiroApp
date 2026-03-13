@@ -1,5 +1,10 @@
 <resources>
     <string name="app_name">MeuPrimeiroApp</string>
     <string name="item_age">%1$d anos</string>
+    <string name="success_update">Editado com sucesso</string>
+    <string name="error_update">Erro ao editar: %1$s</string>
+    <string name="erro_delete">Erro ao deletar o item</string>
+    <string name="erro_fecth_item">Erro ao buscar o item</string>
+    <string name="success_delete">Item deletado com sucesso</string>
 
 </resources>

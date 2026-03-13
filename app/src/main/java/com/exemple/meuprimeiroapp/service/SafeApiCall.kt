@@ -1,6 +1,7 @@
 package com.exemple.meuprimeiroapp.service
 
 import retrofit2.HttpException
+import java.io.IOException
 
 
 sealed class Result<out T> {

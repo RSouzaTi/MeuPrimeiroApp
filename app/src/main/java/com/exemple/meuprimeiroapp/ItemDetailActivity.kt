@@ -45,6 +45,7 @@ class ItemDetailActivity : AppCompatActivity(), OnMapReadyCallback {
             loadItemInGoogleMap()
         }
     }
+
     private fun setupViews() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -53,8 +54,13 @@ class ItemDetailActivity : AppCompatActivity(), OnMapReadyCallback {
             finish()
         }
         binding.deleteCTA.setOnClickListener {
+            deleteItem()
+        }
+        binding.editCTA.setOnClickListener {
+            editItem()
         }
     }
+
 
     private fun loadItem() {
         val itemId = intent.getStringExtra(ARG_ID) ?: ""
@@ -71,7 +77,7 @@ class ItemDetailActivity : AppCompatActivity(), OnMapReadyCallback {
                     is Result.Error -> {
                         Toast.makeText(
                             this@ItemDetailActivity,
-                            "Erro ao buscar o item",
+                            R.string.erro_fecth_item,
                             Toast.LENGTH_SHORT
                         ).show()
                     }
@@ -112,16 +118,18 @@ class ItemDetailActivity : AppCompatActivity(), OnMapReadyCallback {
             )
         }
     }
+
     private fun deleteItem() {
         CoroutineScope(Dispatchers.IO).launch {
-            val result = safeApiCall { RetrofitClient.itemApiService.deleteItem(item!!.value.id) }
+            val result =
+                safeApiCall { RetrofitClient.itemApiService.deleteItem(item?.value?.id.toString()) }
             withContext(Dispatchers.Main) {
                 when (result) {
-                    is Result.Success ->  handleSuccessDelete()
+                    is Result.Success -> handleSuccessDelete()
                     is Result.Error -> {
                         Toast.makeText(
                             this@ItemDetailActivity,
-                            "Erro ao deletar o item",
+                             R.string.erro_delete,
                             Toast.LENGTH_SHORT
                         ).show()
                         finish()
@@ -132,10 +140,46 @@ class ItemDetailActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
+    private fun editItem() {
+        val currentItemValue = item?.value ?: return // Sai se o item for nulo
+
+        CoroutineScope(Dispatchers.IO).launch {
+            val result = safeApiCall {
+                RetrofitClient.itemApiService.updateItem(
+                    currentItemValue.id.toString(),
+                    currentItemValue.copy(profession = binding.profession.text.toString())
+                )
+            }
+            withContext(Dispatchers.Main) {
+                when (result) {
+                    is Result.Success -> {
+                        // O servidor deve retornar o Item atualizado
+                        // Se a API retornar Item, você pode atualizar o estado local
+                        Toast.makeText(
+                            this@ItemDetailActivity,
+                            R.string.success_update,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        loadItem() // Recarrega para garantir que os dados estão sincronizados
+                        finish()
+                    }
+
+                    is Result.Error -> {
+                        Toast.makeText(
+                            this@ItemDetailActivity,
+                            R.string.error_update,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+        }
+    }
+
     private fun handleSuccessDelete() {
         Toast.makeText(
             this@ItemDetailActivity,
-            "Item deletado com sucesso",
+            R.string.success_delete,
             Toast.LENGTH_SHORT
         ).show()
         finish()
@@ -151,3 +195,4 @@ class ItemDetailActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 }
+

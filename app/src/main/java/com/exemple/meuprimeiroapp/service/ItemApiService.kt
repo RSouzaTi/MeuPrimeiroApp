@@ -1,8 +1,11 @@
 package com.exemple.meuprimeiroapp.service
 
 import com.exemple.meuprimeiroapp.model.Item
+import com.exemple.meuprimeiroapp.model.ItemValue
+import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.PATCH
 import retrofit2.http.Path
 
 interface ItemApiService {
@@ -14,5 +17,9 @@ interface ItemApiService {
     suspend fun getItem(@Path("id") id: String): Item
 
     @DELETE("items/{id}")
-    suspend fun deleteItem(@Path("id") id: Int): Unit
+    suspend fun deleteItem(@Path("id") id: String)
+
+    @PATCH("items/{id}")
+    suspend fun updateItem(@Path("id") id: String, @Body item: ItemValue): Item
+
 }
