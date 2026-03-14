@@ -55,11 +55,16 @@ class MainActivity : AppCompatActivity() {
         }
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.addCta.setOnClickListener {
+            navigateToItem()
 
         }
         binding.message.setOnClickListener {
             fetchItems()
         }
+    }
+
+    private fun navigateToItem() {
+        startActivity(NewItemActivity.newIntent(this))
     }
 
     private fun requestLocationPermissions() {

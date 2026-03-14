@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import com.exemple.meuprimeiroapp.databinding.ActivityItemDetailBinding
 import com.exemple.meuprimeiroapp.model.Item
 import com.exemple.meuprimeiroapp.service.RetrofitClient
@@ -23,7 +22,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class ItemDetailActivity : AppCompatActivity(), OnMapReadyCallback {
+class ItemDetailActivity : BaseMapActivity(), OnMapReadyCallback {
 
     private lateinit var binding: ActivityItemDetailBinding
     private var item: Item? = null
@@ -195,4 +194,3 @@ class ItemDetailActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 }
-

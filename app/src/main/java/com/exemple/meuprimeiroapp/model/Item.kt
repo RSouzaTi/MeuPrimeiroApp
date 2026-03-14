@@ -12,7 +12,7 @@ data class Item(
 
 
 data class ItemValue(
-    val id: Int,
+    val id: String,
     val name: String,
     val surname: String,
     val profession: String,
