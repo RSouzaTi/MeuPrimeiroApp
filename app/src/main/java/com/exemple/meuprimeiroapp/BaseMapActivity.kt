@@ -2,6 +2,7 @@ package com.exemple.meuprimeiroapp
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.maps.GoogleMap
 
 abstract class BaseMapActivity : AppCompatActivity() {
 
@@ -10,4 +11,6 @@ abstract class BaseMapActivity : AppCompatActivity() {
         // Initialization moved to MeuPrimeiroApplication to prevent redundant calls
         // and potential database lock issues.
     }
+
+    abstract fun onMapReady(googleMap: GoogleMap)
 }

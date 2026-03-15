@@ -11,7 +11,7 @@ object RetrofitClient {
     private const val Base_URL = "http://10.0.2.2:3000/" // Endereço para acessar o emulador Android
 
     private val logging = HttpLoggingInterceptor().apply {
-        level = HttpLoggingInterceptor.Level.BODY // Use HEADERS ou BASIC se o corpo for muito grande para evitar EPIPE
+        level = HttpLoggingInterceptor.Level.BASIC // Use HEADERS ou BASIC se o corpo for muito grande para evitar EPIPE
     }
 
     private val okHttpClient = OkHttpClient.Builder()

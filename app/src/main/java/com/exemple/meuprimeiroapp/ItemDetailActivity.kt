@@ -63,6 +63,7 @@ class ItemDetailActivity : BaseMapActivity(), OnMapReadyCallback {
 
     private fun loadItem() {
         val itemId = intent.getStringExtra(ARG_ID) ?: ""
+        android.util.Log.d("API_DEBUG", "Buscando item com ID: $itemId")
 
         CoroutineScope(Dispatchers.IO).launch {
             val result = safeApiCall { RetrofitClient.itemApiService.getItem(itemId) }
@@ -86,7 +87,7 @@ class ItemDetailActivity : BaseMapActivity(), OnMapReadyCallback {
     }
 
     private fun setupGoogleMap() {
-        val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+       val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
     }
 
@@ -119,9 +120,10 @@ class ItemDetailActivity : BaseMapActivity(), OnMapReadyCallback {
     }
 
     private fun deleteItem() {
+        val itemId = item?.id?.toString() ?: return
         CoroutineScope(Dispatchers.IO).launch {
             val result =
-                safeApiCall { RetrofitClient.itemApiService.deleteItem(item?.value?.id.toString()) }
+                safeApiCall { RetrofitClient.itemApiService.deleteItem(itemId) }
             withContext(Dispatchers.Main) {
                 when (result) {
                     is Result.Success -> handleSuccessDelete()
@@ -131,8 +133,6 @@ class ItemDetailActivity : BaseMapActivity(), OnMapReadyCallback {
                              R.string.erro_delete,
                             Toast.LENGTH_SHORT
                         ).show()
-                        finish()
-
                     }
                 }
             }
@@ -140,12 +140,13 @@ class ItemDetailActivity : BaseMapActivity(), OnMapReadyCallback {
     }
 
     private fun editItem() {
+        val itemId = item?.id?.toString() ?: return
         val currentItemValue = item?.value ?: return // Sai se o item for nulo
 
         CoroutineScope(Dispatchers.IO).launch {
             val result = safeApiCall {
                 RetrofitClient.itemApiService.updateItem(
-                    currentItemValue.id.toString(),
+                    itemId,
                     currentItemValue.copy(profession = binding.profession.text.toString())
                 )
             }
@@ -160,7 +161,6 @@ class ItemDetailActivity : BaseMapActivity(), OnMapReadyCallback {
                             Toast.LENGTH_SHORT
                         ).show()
                         loadItem() // Recarrega para garantir que os dados estão sincronizados
-                        finish()
                     }
 
                     is Result.Error -> {

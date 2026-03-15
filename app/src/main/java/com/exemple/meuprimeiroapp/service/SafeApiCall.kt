@@ -14,6 +14,7 @@ suspend fun <T> safeApiCall(apiCall: suspend () -> T): Result<T> {
         val response = apiCall()
         Result.Success(response)
     } catch (e: Exception) {
+        android.util.Log.e("API_ERROR", "Erro na chamada: ${e.message}", e)
         when (e) {
             is HttpException -> {
                 val code = e.code()

@@ -11,5 +11,6 @@
     <string name="requerid_field">Campo Obrigatorio</string>
     <string name="error_add_item">Erro ao adicionar item</string>
     <string name="success_add_item">Item adicionado com sucesso</string>
+    <string name="location_permission_required">Permissão de Localização negada</string>
 
 </resources>
