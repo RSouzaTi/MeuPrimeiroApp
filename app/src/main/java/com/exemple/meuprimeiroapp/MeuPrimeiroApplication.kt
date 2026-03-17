@@ -9,9 +9,9 @@ class MeuPrimeiroApplication : Application(), OnMapsSdkInitializedCallback {
 
     override fun onCreate() {
         super.onCreate()
-        // Initialize Maps SDK at the application level to avoid repeated initialization
-        // and potential database lock issues in Activities.
-        MapsInitializer.initialize(applicationContext, Renderer.LATEST, this)
+        // Initialize Maps SDK with LEGACY renderer to avoid internal SDK errors
+        // such as errorCode: 65561, engine: 2 (LATEST)
+        MapsInitializer.initialize(applicationContext, Renderer.LEGACY, this)
     }
 
     override fun onMapsSdkInitialized(renderer: Renderer) {
