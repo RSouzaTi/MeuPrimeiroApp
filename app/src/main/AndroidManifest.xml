@@ -12,7 +12,7 @@
 
 
    <application
-        android:name=".MeuPrimeiroApplication"
+        android:name="com.exemple.meuprimeiroapp.MeuPrimeiroApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -39,16 +39,16 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyC6Zc6hPZBRQLQwsN-GJFuRWeTvxyuFDZs" />
         <activity
-            android:name=".NewItemActivity"
+            android:name="com.exemple.meuprimeiroapp.NewItemActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:exported="false" />
 
         <activity
-            android:name=".ItemDetailActivity"
+            android:name="com.exemple.meuprimeiroapp.ItemDetailActivity"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.exemple.meuprimeiroapp.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "965049615108",
+    "project_id": "meuprimeiroapp-e4cda",
+    "storage_bucket": "meuprimeiroapp-e4cda.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:965049615108:android:a42db33ed439e5fd68c651",
+        "android_client_info": {
+          "package_name": "com.exemple.meuprimeiroapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBX1Fubbv-XXAiAZfE-nLChFFGu0icla9M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

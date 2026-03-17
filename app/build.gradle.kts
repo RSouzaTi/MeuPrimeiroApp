@@ -1,5 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.legacy.kapt)
+    alias(libs.plugins.google.services)
 }
 
 android {
@@ -24,11 +26,10 @@ android {
                 "proguard-rules.pro"
             )
         }
-
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     buildFeatures {
@@ -43,22 +44,33 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
-    implementation(libs.androidx.lifecycle.runtime)
+
     implementation(libs.androidx.recyclerview)
+    implementation(libs.androidx.lifecycle.runtime)
     implementation(libs.androidx.swiperefresh)
 
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.gson)
     implementation(libs.okhttp.logging)
+
     implementation(libs.picasso)
 
     implementation(libs.play.services.location)
     implementation(libs.play.services.maps)
     implementation(libs.play.services.auth)
 
+    // Room
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    kapt(libs.room.compiler)
+
+    // Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.storage.ktx)
 
     testImplementation(libs.junit)
-
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }

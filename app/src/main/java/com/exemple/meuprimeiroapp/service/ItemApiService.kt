@@ -14,7 +14,7 @@ interface ItemApiService {
     @GET("items")
     suspend fun getItems(): List<Item>
 
-    @GET("/items/{id}")
+    @GET("items/{id}")
     suspend fun getItem(@Path("id") id: String): Item
 
     @DELETE("items/{id}")

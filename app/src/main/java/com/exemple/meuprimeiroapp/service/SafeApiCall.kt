@@ -1,8 +1,6 @@
 package com.exemple.meuprimeiroapp.service
 
 import retrofit2.HttpException
-import java.io.IOException
-
 
 sealed class Result<out T> {
     data class Success<out T>(val data: T) : Result<T>()
@@ -14,7 +12,6 @@ suspend fun <T> safeApiCall(apiCall: suspend () -> T): Result<T> {
         val response = apiCall()
         Result.Success(response)
     } catch (e: Exception) {
-        android.util.Log.e("API_ERROR", "Erro na chamada: ${e.message}", e)
         when (e) {
             is HttpException -> {
                 val code = e.code()
