@@ -2,14 +2,10 @@ package com.exemple.meuprimeiroapp.model
 
 import com.google.gson.annotations.SerializedName
 
-/**
- * Representa um item contendo informações detalhadas de um perfil de usuário.
- */
 data class Item(
-    val id: Int,
-    val value: ItemValue,
+    val id: String,
+    val value: ItemValue // O segredo está aqui: os dados estão dentro de 'value'
 )
-
 
 data class ItemValue(
     val id: String,
@@ -20,14 +16,11 @@ data class ItemValue(
     val imageUrl: String,
     val age: Int,
     val location: ItemLocation?
-){
+) {
     val fullName: String
         get() = "$name $surname"
 }
 
-/**
- * Representa a localização geográfica de um item.
- */
 data class ItemLocation(
     val name: String,
     val latitude: Double,

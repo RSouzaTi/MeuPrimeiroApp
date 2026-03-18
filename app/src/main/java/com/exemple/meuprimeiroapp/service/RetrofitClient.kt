@@ -1,5 +1,6 @@
 package com.exemple.meuprimeiroapp.service
 
+import ItemApiService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -8,10 +9,11 @@ import java.util.concurrent.TimeUnit
 
 object RetrofitClient {
 
-    private const val Base_URL = "http://10.0.2.2:3000/" // Endereço para acessar o emulador Android
+    private const val Base_URL = "http://10.0.2.2:3000/"
 
     private val logging = HttpLoggingInterceptor().apply {
-        level = HttpLoggingInterceptor.Level.BASIC // Use HEADERS ou BASIC se o corpo for muito grande para evitar EPIPE
+        // AJUSTE: Mudar para BODY para conseguirmos ver o JSON no Logcat
+        level = HttpLoggingInterceptor.Level.BODY
     }
 
     private val okHttpClient = OkHttpClient.Builder()

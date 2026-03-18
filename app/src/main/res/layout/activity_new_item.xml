@@ -63,11 +63,12 @@
         app:layout_constraintEnd_toEndOf="@id/name"
         app:layout_constraintTop_toBottomOf="@id/age" />
 
-    <ImageButton
+    <Button
         android:id="@+id/takePictureCta"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:src="@android:drawable/ic_menu_camera"
+        android:text="Tirar foto"
+        app:icon="@android:drawable/ic_menu_camera"
         app:layout_constraintTop_toBottomOf="@id/imageUrl"
         app:layout_constraintStart_toStartOf="@id/imageUrl"
         app:layout_constraintEnd_toEndOf="@id/imageUrl"/>

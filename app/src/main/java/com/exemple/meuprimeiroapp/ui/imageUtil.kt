@@ -1,22 +1,23 @@
 package com.exemple.meuprimeiroapp.ui
 
-import CircleTransform
 import android.widget.ImageView
 import com.exemple.meuprimeiroapp.R
 import com.squareup.picasso.Picasso
 
 fun ImageView.loadUrl(url: String?) {
-    if (url.isNullOrEmpty()) {
+    if (url.isNullOrBlank()) {
         setImageResource(R.drawable.ic_error)
         return
     }
+
+    // Log para você conferir a URL no Logcat
+    android.util.Log.d("Picasso", "URL da Imagem: $url")
 
     Picasso.get()
         .load(url)
         .placeholder(R.drawable.ic_download)
         .error(R.drawable.ic_error)
-        .fit() // Ajusta a imagem ao tamanho da ImageView
-        .centerCrop() // Corta para preencher mantendo a proporção
-        // .transform(CircleTransform()) // Comentei para testar se a imagem aparece sem a transformação
+        // Removido o fit() e centerCrop() temporariamente para garantir que a imagem apareça
+        // independente do tamanho da ImageView no XML
         .into(this)
 }

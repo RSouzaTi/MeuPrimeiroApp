@@ -4,7 +4,6 @@ import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.location.Location
 import android.os.Bundle
@@ -21,7 +20,6 @@ import com.example.meuprimeiroapp.database.DatabaseBuilder
 import com.example.meuprimeiroapp.database.model.UserLocation
 import com.exemple.meuprimeiroapp.adapter.ItemAdapter
 import com.exemple.meuprimeiroapp.databinding.ActivityMainBinding
-import com.exemple.meuprimeiroapp.model.Item
 import com.exemple.meuprimeiroapp.service.RetrofitClient
 import com.exemple.meuprimeiroapp.service.Result
 import com.exemple.meuprimeiroapp.service.safeApiCall
@@ -33,6 +31,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import com.exemple.meuprimeiroapp.model.Item
 
 class MainActivity : AppCompatActivity() {
 
@@ -196,4 +195,8 @@ class MainActivity : AppCompatActivity() {
             Intent(context, MainActivity::class.java)
 
     }
+}
+
+private fun NewItemActivity.Companion.newIntent(activity: MainActivity): Intent {
+    return Intent(activity, NewItemActivity::class.java)
 }
