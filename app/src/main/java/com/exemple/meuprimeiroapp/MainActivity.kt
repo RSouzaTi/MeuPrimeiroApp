@@ -2,10 +2,14 @@ package com.exemple.meuprimeiroapp
 
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.Manifest.permission.ACCESS_FINE_LOCATION
+import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.location.Location
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
@@ -13,6 +17,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.meuprimeiroapp.database.DatabaseBuilder
+import com.example.meuprimeiroapp.database.model.UserLocation
 import com.exemple.meuprimeiroapp.adapter.ItemAdapter
 import com.exemple.meuprimeiroapp.databinding.ActivityMainBinding
 import com.exemple.meuprimeiroapp.model.Item
@@ -22,6 +28,7 @@ import com.exemple.meuprimeiroapp.service.safeApiCall
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.location.LocationServices
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -35,13 +42,12 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var locationPermissionLauncher: ActivityResultLauncher<String>
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setupViews()
-        requestLocationPermissions()
+        setupView()
+        requestLocationPermission()
     }
 
     override fun onResume() {
@@ -49,61 +55,73 @@ class MainActivity : AppCompatActivity() {
         fetchItems()
     }
 
-    private fun setupViews() {
-        binding.swipeRefreshLayout.setOnRefreshListener {
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_loggout -> {
+                onLoggout()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun onLoggout() {
+        FirebaseAuth.getInstance().signOut()
+        val intent = LoginActivity.newIntent(this)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+    }
+
+    private fun setupView() {
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            fetchItems()
         }
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.addCta.setOnClickListener {
-            navigateToItem()
-
+            navigateToNewItem()
         }
         binding.message.setOnClickListener {
             fetchItems()
         }
     }
 
-    private fun navigateToItem() {
+    private fun navigateToNewItem() {
         startActivity(NewItemActivity.newIntent(this))
     }
 
-    private fun requestLocationPermissions() {
-        //Inicializa o fusedLocationClient
+    private fun requestLocationPermission() {
+        // Inicializa o FusedLocationPermission
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
-        //Configura o ActivityResultLauncher para solicitar a permissão de localização
-        locationPermissionLauncher =
-            registerForActivityResult(contract = ActivityResultContracts.RequestPermission()) { isGranted ->
-                if (isGranted) {
-                    getLastLocation()
-                } else {
-                    Toast.makeText(this, "Permissão de localização negada", Toast.LENGTH_SHORT)
-                        .show()
-
-                }
+        // Configura o ActivityResultLauncher para solicitar a permissão de localização
+        locationPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
+                getLastLocation()
+            } else {
+                Toast.makeText(this, getString(R.string.location_permission_required), Toast.LENGTH_SHORT).show()
             }
+        }
+
         checkLocationPermissionAndRequest()
     }
 
     private fun checkLocationPermissionAndRequest() {
         when {
-            ContextCompat.checkSelfPermission(
-                this,
-                ACCESS_FINE_LOCATION
-            ) == PERMISSION_GRANTED && ContextCompat.checkSelfPermission(
-                this, ACCESS_COARSE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED -> {
+            ContextCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) == PERMISSION_GRANTED &&
+                    ContextCompat.checkSelfPermission(this, ACCESS_COARSE_LOCATION) == PERMISSION_GRANTED -> {
                 getLastLocation()
             }
-
             shouldShowRequestPermissionRationale(ACCESS_FINE_LOCATION) -> {
                 locationPermissionLauncher.launch(ACCESS_FINE_LOCATION)
             }
-
             shouldShowRequestPermissionRationale(ACCESS_COARSE_LOCATION) -> {
                 locationPermissionLauncher.launch(ACCESS_COARSE_LOCATION)
             }
-
             else -> {
                 locationPermissionLauncher.launch(ACCESS_FINE_LOCATION)
             }
@@ -112,9 +130,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun getLastLocation() {
         if (ContextCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) != PERMISSION_GRANTED &&
-            ContextCompat.checkSelfPermission(this, ACCESS_COARSE_LOCATION) != PERMISSION_GRANTED
-        ) {
-            requestLocationPermissions()
+            ContextCompat.checkSelfPermission(this, ACCESS_COARSE_LOCATION) != PERMISSION_GRANTED) {
+            requestLocationPermission()
             return
         }
 
@@ -123,36 +140,34 @@ class MainActivity : AppCompatActivity() {
                 val location = task.result
                 val latitude = location.latitude
                 val longitude = location.longitude
-                // Faça algo com a latitude e longitude
-                Toast.makeText(
-                    this,
-                    "Latitude: $latitude, Longitude: $longitude",
-                    Toast.LENGTH_SHORT
-                ).show()
+                CoroutineScope(Dispatchers.IO).launch {
+                    val userLocation = UserLocation(
+                        latitude = latitude,
+                        longitude = longitude
+                    )
+                    DatabaseBuilder.getInstance(applicationContext)
+                        .userLocationDao()
+                        .insert(userLocation)
+                }
             } else {
-                Toast.makeText(this, "Falha ao obter a localização", Toast.LENGTH_SHORT).show()
-
+                Toast.makeText(this, getString(R.string.cannot_get_location), Toast.LENGTH_SHORT).show()
             }
         }
     }
-
 
     private fun fetchItems() {
         CoroutineScope(Dispatchers.IO).launch {
             val result = safeApiCall { RetrofitClient.itemApiService.getItems() }
+
             withContext(Dispatchers.Main) {
                 binding.swipeRefreshLayout.isRefreshing = false
                 when (result) {
                     is Result.Success -> handleOnSuccess(result.data)
-                    is Result.Error -> { handleOnError()
-
-                    }
+                    is Result.Error -> handleOnError()
                 }
             }
         }
     }
-
-
 
     private fun handleOnSuccess(items: List<Item>) {
         if (items.isEmpty()) {
@@ -166,15 +181,19 @@ class MainActivity : AppCompatActivity() {
         binding.recyclerView.adapter = ItemAdapter(items) { item ->
             val intent = ItemDetailActivity.newIntent(this, item.id.toString())
             startActivity(intent)
-
         }
     }
-
 
     private fun handleOnError() {
         binding.message.visibility = View.VISIBLE
         binding.message.setText(R.string.generical_error)
         binding.recyclerView.visibility = View.GONE
+    }
+
+    companion object {
+
+        fun newIntent(context: Context) =
+            Intent(context, MainActivity::class.java)
 
     }
 }

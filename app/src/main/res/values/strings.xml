@@ -6,11 +6,20 @@
     <string name="erro_delete">Erro ao deletar o item</string>
     <string name="erro_fecth_item">Erro ao buscar o item</string>
     <string name="success_delete">Item deletado com sucesso</string>
-    <string name="generical_error">Erro desconehecido, clique para tentar novamente.</string>
-    <string name="no_items">Nenhum item disponivel</string>
-    <string name="requerid_field">Campo Obrigatorio</string>
+    <string name="generical_error">Erro desconhecido, clique para tentar novamente.</string>
+    <string name="no_items">Nenhum item disponível</string>
+    <string name="requerid_field">Campo obrigatório</string>
     <string name="error_add_item">Erro ao adicionar item</string>
     <string name="success_add_item">Item adicionado com sucesso</string>
-    <string name="location_permission_required">Permissão de Localização negada</string>
-
+    <string name="location_permission_required">Permissão de localização negada</string>
+    <string name="hint_cellphone">55 11 912345678</string>
+    <string name="code_brazil">+55</string>
+    <string name="send_sms">Enviar SMS</string>
+    <string name="hint_verify_sms">123456</string>
+    <string name="verify_sms">Verificar SMS</string>
+    <string name="menu_loggout">Sair</string>
+    <string name="image_obtained">Imagem obtida</string>
+    <string name="failed_upload_firebase">Falha ao realizar o upload para o Firebase</string>
+    <string name="cannot_get_location">Não foi possível obter a localização</string>
+    <string name="lat_lng_format">Lat: %1$.6f, Lng: %2$.6f</string>
 </resources>
