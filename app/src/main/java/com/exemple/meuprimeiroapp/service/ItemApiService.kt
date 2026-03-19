@@ -1,4 +1,5 @@
 import com.exemple.meuprimeiroapp.model.Item
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -22,5 +23,5 @@ interface ItemApiService {
     suspend fun updateItem(@Path("id") id: String, @Body item: Item): Item
 
     @POST("items")
-    suspend fun addItem(@Body item: Item): Item
+    suspend fun addItem(@Body item: Item): Response<Item>
 }

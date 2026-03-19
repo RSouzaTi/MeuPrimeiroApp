@@ -9,6 +9,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
@@ -194,13 +195,19 @@ class NewItemActivity : AppCompatActivity(), OnMapReadyCallback {
             // Criamos o objeto Item que contém o value (conforme seu Logcat)
             val newItem = Item(id = generatedId, value = newItemValue)
 
+            // LOG DE DEPURAÇÃO: Adicionado para verificar o objeto JSON antes do envio
+            Log.d("API_DEBUG", "Objeto que será enviado: $newItem")
+
             val result = withContext(Dispatchers.IO) {
                 safeApiCall { RetrofitClient.itemApiService.addItem(newItem) }
             }
 
             when (result) {
                 is Result.Success -> handleOnSuccess()
-                is Result.Error -> handleOnError()
+                is Result.Error -> {
+                    Log.e("API_DEBUG", "Erro na chamada do Retrofit")
+                    handleOnError()
+                }
             }
             binding.saveCta.isEnabled = true
         }
